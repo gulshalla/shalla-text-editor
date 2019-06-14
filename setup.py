@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="shalla_editor",
+    name="shalla_text",
     version="0.0.2",
     author="Omar Shalla",
     description="A text editor built using Python3",
