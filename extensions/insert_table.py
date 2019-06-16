@@ -6,14 +6,18 @@ class Table(QtWidgets.QDialog):
 
     def __init__(self, parent = None):
         QtWidgets.QDialog.__init__(self, parent)
+        
+        #Parent is needed as we are performing operations on the parents TextField
         self.parent = parent 
-
+        
         self.setup_ui()
 
     def setup_ui(self):
         self.setObjectName("Insert Table")
         self.resize(340, 177)
         
+
+        #UI features. Generated using PyQT5 Designer
         self.gridLayout = QtWidgets.QGridLayout(self)
         self.gridLayout.setObjectName("gridLayout")
         self.label_3 = QtWidgets.QLabel(self)
@@ -69,6 +73,7 @@ class Table(QtWidgets.QDialog):
         padding = self.padding.value()
         spacing = self.spacing.value()
 
+        #Check for invalid row, col inputs
         if not rows or not cols:
             error = 'Row and Column cannot be zero'
             popup = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning, 
@@ -82,6 +87,8 @@ class Table(QtWidgets.QDialog):
 
             self.close()
 
+
+#add, remove rows and cols from a created table
 def insert_row(parent):
     cursor = parent.text.textCursor()
     table = cursor.currentTable()
@@ -105,3 +112,5 @@ def remove_col(parent):
     table = cursor.currentTable()
     cell = table.cellAt(cursor)
     table.removeColumns(cell.column(), 1)
+
+

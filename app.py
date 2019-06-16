@@ -2,9 +2,10 @@ import sys
 from PyQt5 import QtWidgets, QtPrintSupport, QtGui, QtCore
 from PyQt5.QtCore import Qt 
 
-#Lowercase functions are my own. Upper case functions are from the PyQt Module
-from layouts import *
 from extensions import *
+from layouts import *
+
+#Lowercase functions are my own. Upper case functions are from the PyQt Module
 
 class Main(QtWidgets.QMainWindow):
 
@@ -16,17 +17,20 @@ class Main(QtWidgets.QMainWindow):
         self.saved = True
 
     def setup_ui(self):
-        self.setGeometry(1000, 100, 800, 900)
+        self.setGeometry(1000, 100, 900, 1000)
         self.center()
         self.setWindowTitle('Shalla Editor')
 
         self.text = QtWidgets.QTextEdit(self)
         self.setCentralWidget(self.text)
 
-        
-        tool_bar.ToolBar(self)
-        self.status_bar = self.statusBar()
 
+        #initiazile toolbar, statusbar
+        self.status_bar = self.statusBar()
+        tool_bar.ToolBar(self)
+        format_bar.FormatBar(self)
+
+        #request custom context menu
         self.text.setContextMenuPolicy(Qt.CustomContextMenu)
         self.text.customContextMenuRequested.connect(self.custom_menu)
     
@@ -35,7 +39,8 @@ class Main(QtWidgets.QMainWindow):
         make the window appear in the center of the screen
         '''
         frameGm = self.frameGeometry()
-        screen = QtWidgets.QApplication.desktop().screenNumber(QtWidgets.QApplication.desktop().cursor().pos())
+        screen = QtWidgets.QApplication.desktop().screenNumber(
+            QtWidgets.QApplication.desktop().cursor().pos())
         centerPoint = QtWidgets.QApplication.desktop().screenGeometry(screen).center()
         frameGm.moveCenter(centerPoint)
         self.move(frameGm.topLeft())
@@ -51,13 +56,15 @@ class Main(QtWidgets.QMainWindow):
         '''
         a custon context menu in case of table, hyperlink or string operations
         '''
-
         cursor = self.text.textCursor()
         table = cursor.currentTable()
+        
+        #position variable is needed to make sure menu is spawned at click position
         pos = self.text.mapToGlobal(position)
+        
         if table:
+            #create a new menu and add actions to it
             menu = QtWidgets.QMenu(self)
-
             append_row_action = QtWidgets.QAction('Append row', self)
             append_row_action.triggered.connect(lambda: table.appendRows(1))
 
@@ -86,12 +93,17 @@ class Main(QtWidgets.QMainWindow):
             menu.addAction(remove_col_action)
 
             position = self.mapToGlobal(position)
+            
+            #create an offset to account for Toolbar
             position.setY(pos.y() + 4)
+            
             menu.move(position)
             menu.show()
         else:
             event = QtGui.QContextMenuEvent(QtGui.QContextMenuEvent.Mouse,QtCore.QPoint())
             self.text.contextMenuEvent(event)
+
+        
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
@@ -103,4 +115,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
 

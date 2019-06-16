@@ -43,8 +43,9 @@ class ToolBar(QtWidgets.QMainWindow):
         ('Redo', 'icons/redo.png', self.parent.text.redo, 'Ctrl+Shift+Z', 'Redo'),
         ('Bullet List', 'icons/bullet.png', self.bullet, 'Ctrl+Shift+B', 'Bullet List'),
         ('Numbered List', 'icons/number.png', self.numbered, 'Ctrl+Shift+N', 'Numbered List'),
-        ('Insert table', 'icons/table.png', self.table, 'Ctrl+T', 'Insert table')]
-        
+        ('Insert table', 'icons/table.png', self.table, 'Ctrl+T', 'Insert table'),
+        ('Document statistics', 'icons/words.png', self.document_stats, 'Ctrl + L', 
+            'Document statistics')] 
 
         # create new actions
         counter = itertools.count()
@@ -61,6 +62,7 @@ class ToolBar(QtWidgets.QMainWindow):
         self.bullet_action = self.make_action(actions[next(counter)])
         self.numbered_action = self.make_action(actions[next(counter)])
         self.table_action = self.make_action(actions[next(counter)])
+        self.document_statistics_action = self.make_action(actions[next(counter)])
 
 
         # add them to the toolbar
@@ -90,12 +92,15 @@ class ToolBar(QtWidgets.QMainWindow):
         self.toolbar.addSeparator()
         self.parent.addToolBarBreak()
 
+        self.toolbar.addAction(self.document_statistics_action)
+
 
     def open(self):
         '''
         open a new file of type '.shalla' only
         '''
-        self.parent.document_name = QtWidgets.QFileDialog.getOpenFileName(self.parent, 'Open File', '.', '(*.shalla)')[0]
+        self.parent.document_name = QtWidgets.QFileDialog.getOpenFileName(
+            self.parent, 'Open File', '.', '(*.shalla)')[0]
         if self.parent.document_name:
             with open(self.parent.document_name, 'rt') as doc:
                 self.parent.text.setText(doc.read())
@@ -104,10 +109,13 @@ class ToolBar(QtWidgets.QMainWindow):
         '''
         save the current document to local disk
         '''
+        
+        #Make sure we have a filename
         if self.parent.document_name == '':
             self.parent.document_name = QtWidgets.QFileDialog.getSaveFileName(
                 self.parent, 'Save File')[0]
 
+        #Make sure .shalla is appended
         if self.parent.document_name:
             if not self.parent.document_name.endswith('.shalla'): 
                 self.parent.document_name += '.shalla'
@@ -129,7 +137,8 @@ class ToolBar(QtWidgets.QMainWindow):
         '''
         backend function for printing the current document
         '''
-        print_box = QtPrintSupport.QPrintDialog()
+        print_box = QtPrintSupport.QPrintDialog() 
+
         if print_box.exec_() == QtWidgets.QDialog.Accepted:
             self.parent.text.document().print_(print_box.printer())
 
@@ -149,9 +158,18 @@ class ToolBar(QtWidgets.QMainWindow):
         cursor.insertList(QtGui.QTextListFormat.ListDisc)
 
     def table(self):
+        '''
+        create table trigger function
+        spawns a UI asking for table properties, creates a table and then inserts 
+        it into the document
+        '''
+        
+        #create a Table object. Def is in extensions 
         table_object = insert_table.Table(self.parent)
         table_object.show()
 
-
-
+    def document_stats(self):
+        stats = document_statistics.DocumentStatistics(self.parent)
+        stats.process()
+        stats.show()
 
