@@ -72,12 +72,10 @@ class FormatBar(QtWidgets.QMainWindow):
         self.formatbar.addWidget(font_bar)
         self.formatbar.addWidget(font_size)
         self.formatbar.addSeparator()
-        self.parent.addToolBarBreak()
 
         self.formatbar.addAction(font_color_action)
         self.formatbar.addAction(highlight_action)
         self.formatbar.addSeparator()
-        self.parent.addToolBarBreak()
         
         self.formatbar.addAction(italic_action)
         self.formatbar.addAction(bold_action)
@@ -86,7 +84,6 @@ class FormatBar(QtWidgets.QMainWindow):
         self.formatbar.addAction(sub_action)
         self.formatbar.addAction(super_action)
         self.formatbar.addSeparator()
-        self.parent.addToolBarBreak()
 
         self.formatbar.addAction(align_left_action)
         self.formatbar.addAction(align_right_action)
@@ -95,7 +92,6 @@ class FormatBar(QtWidgets.QMainWindow):
         self.formatbar.addAction(indent_action)
         self.formatbar.addAction(dedent_action)
         self.formatbar.addSeparator()
-        self.parent.addToolBarBreak()
     
         
 

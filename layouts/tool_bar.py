@@ -71,12 +71,10 @@ class ToolBar(QtWidgets.QMainWindow):
         self.toolbar.addAction(self.open_action)
         self.toolbar.addAction(self.save_action)
         self.toolbar.addSeparator()
-        self.parent.addToolBarBreak()
 
         self.toolbar.addAction(self.print_action)
         self.toolbar.addAction(self.preview_action)
         self.toolbar.addSeparator()
-        self.parent.addToolBarBreak()
 
         self.toolbar.addAction(self.cut_action)
         self.toolbar.addAction(self.copy_action)
@@ -84,15 +82,14 @@ class ToolBar(QtWidgets.QMainWindow):
         self.toolbar.addAction(self.undo_action)
         self.toolbar.addAction(self.redo_action)
         self.toolbar.addSeparator()
-        self.parent.addToolBarBreak()
 
         self.toolbar.addAction(self.bullet_action)
         self.toolbar.addAction(self.numbered_action)
         self.toolbar.addAction(self.table_action)
         self.toolbar.addSeparator()
-        self.parent.addToolBarBreak()
 
         self.toolbar.addAction(self.document_statistics_action)
+        self.parent.addToolBarBreak()
 
 
     def open(self):
