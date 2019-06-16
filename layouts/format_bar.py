@@ -67,7 +67,9 @@ class FormatBar(QtWidgets.QMainWindow):
         font_size.valueChanged.connect(lambda size: self.parent.text.setFontPointSize(size))
         font_size.setValue(14)
 
-        self.formatbar = self.parent.addToolBar('Format Bar')
+        #Create a format bar in the parent
+        self.parent.format_bar = self.parent.addToolBar('Format Bar')
+        self.formatbar = self.parent.format_bar
 
         self.formatbar.addWidget(font_bar)
         self.formatbar.addWidget(font_size)
@@ -94,8 +96,6 @@ class FormatBar(QtWidgets.QMainWindow):
         self.formatbar.addSeparator()
     
         
-
-
     #functions that are triggered when a button is pressed
 
     def set_italic(self):

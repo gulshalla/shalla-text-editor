@@ -13,12 +13,12 @@ class ToolBar(QtWidgets.QMainWindow):
         #inherit from the Main class
         self.parent = parent
         
-        #Initialize the toolbar
+        #Initialize the parent.tool_bar
         self.setup_toolbar()
 
     def make_action(self, arg):
             '''
-            function to make a new action for the toolbar
+            function to make a new action for the parent.tool_bar
             @arg: a list containing [name, icon path, slot_function, shortcut, tip]
             @return: the newly made action
             '''
@@ -49,46 +49,47 @@ class ToolBar(QtWidgets.QMainWindow):
 
         # create new actions
         counter = itertools.count()
-        self.new_action = self.make_action(actions[next(counter)])
-        self.open_action = self.make_action(actions[next(counter)])
-        self.save_action = self.make_action(actions[next(counter)])
-        self.print_action = self.make_action(actions[next(counter)])
-        self.preview_action = self.make_action(actions[next(counter)])
-        self.cut_action = self.make_action(actions[next(counter)])
-        self.copy_action = self.make_action(actions[next(counter)])
-        self.paste_action = self.make_action(actions[next(counter)])
-        self.undo_action = self.make_action(actions[next(counter)])
-        self.redo_action = self.make_action(actions[next(counter)])
-        self.bullet_action = self.make_action(actions[next(counter)])
-        self.numbered_action = self.make_action(actions[next(counter)])
-        self.table_action = self.make_action(actions[next(counter)])
-        self.document_statistics_action = self.make_action(actions[next(counter)])
+        self.parent.new_action = self.make_action(actions[next(counter)])
+        self.parent.open_action = self.make_action(actions[next(counter)])
+        self.parent.save_action = self.make_action(actions[next(counter)])
+        self.parent.print_action = self.make_action(actions[next(counter)])
+        self.parent.preview_action = self.make_action(actions[next(counter)])
+        self.parent.cut_action = self.make_action(actions[next(counter)])
+        self.parent.copy_action = self.make_action(actions[next(counter)])
+        self.parent.paste_action = self.make_action(actions[next(counter)])
+        self.parent.undo_action = self.make_action(actions[next(counter)])
+        self.parent.redo_action = self.make_action(actions[next(counter)])
+        self.parent.bullet_action = self.make_action(actions[next(counter)])
+        self.parent.numbered_action = self.make_action(actions[next(counter)])
+        self.parent.table_action = self.make_action(actions[next(counter)])
+        self.parent.document_statistics_action = self.make_action(actions[next(counter)])
 
 
-        # add them to the toolbar
-        self.toolbar = self.parent.addToolBar("ToolBar")
-        self.toolbar.addAction(self.new_action)
-        self.toolbar.addAction(self.open_action)
-        self.toolbar.addAction(self.save_action)
+        # add them to the parent.tool_bar
+        self.parent.tool_bar = self.parent.addToolBar("ToolBar")
+        self.toolbar = self.parent.tool_bar
+        self.toolbar.addAction(self.parent.new_action)
+        self.toolbar.addAction(self.parent.open_action)
+        self.toolbar.addAction(self.parent.save_action)
         self.toolbar.addSeparator()
 
-        self.toolbar.addAction(self.print_action)
-        self.toolbar.addAction(self.preview_action)
+        self.toolbar.addAction(self.parent.print_action)
+        self.toolbar.addAction(self.parent.preview_action)
         self.toolbar.addSeparator()
 
-        self.toolbar.addAction(self.cut_action)
-        self.toolbar.addAction(self.copy_action)
-        self.toolbar.addAction(self.paste_action)
-        self.toolbar.addAction(self.undo_action)
-        self.toolbar.addAction(self.redo_action)
+        self.toolbar.addAction(self.parent.cut_action)
+        self.toolbar.addAction(self.parent.copy_action)
+        self.toolbar.addAction(self.parent.paste_action)
+        self.toolbar.addAction(self.parent.undo_action)
+        self.toolbar.addAction(self.parent.redo_action)
         self.toolbar.addSeparator()
 
-        self.toolbar.addAction(self.bullet_action)
-        self.toolbar.addAction(self.numbered_action)
-        self.toolbar.addAction(self.table_action)
+        self.toolbar.addAction(self.parent.bullet_action)
+        self.toolbar.addAction(self.parent.numbered_action)
+        self.toolbar.addAction(self.parent.table_action)
         self.toolbar.addSeparator()
 
-        self.toolbar.addAction(self.document_statistics_action)
+        self.toolbar.addAction(self.parent.document_statistics_action)
         self.parent.addToolBarBreak()
 
 
@@ -170,3 +171,22 @@ class ToolBar(QtWidgets.QMainWindow):
         stats.process()
         stats.show()
 
+    def insert_image(self):
+        image_file = QtWidgets.QFileDialog.getOpenFileName(self.parent, 
+            'Insert image', '.', 'Images (*.png *.jpg *.bmp *.gif)')[0]
+
+        if image_file:
+            image = QtGui.QImage(image_file)
+            print(type(image))
+            cursor = self.parent.text.textCursor()
+            print(type(cursor))
+            if image.isNull():
+                error = 'Image could not load'
+                popup = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical,
+                    error, error, QtWidgets.QMessageBox.Ok, self.parent)
+                popup.show()
+            else:
+                cursor = self.parent.text.textCursor()
+                pixmap = QtGui.QPixmap(image)
+                pixmap4 = pixmap.scaled(64, 64, QtCore.Qt.KeepAspectRatio)
+                cursor.insertImage(pixmap4, image_file)

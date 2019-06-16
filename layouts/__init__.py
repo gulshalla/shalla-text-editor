@@ -1,1 +1,1 @@
-__all__ = ['tool_bar', 'format_bar']
+__all__ = ['tool_bar', 'format_bar', 'status_bar', 'document', 'menu_bar']
