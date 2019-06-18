@@ -5,18 +5,27 @@ from PyQt5.QtCore import Qt
 from extensions import *
 from layouts import *
 
-#Lowercase functions are my own. Upper case functions are from the PyQt Module
+#import json
+import pickle
 
+#Lowercase functions are my own. Upper case functions are from the PyQt Module
 class Main(QtWidgets.QMainWindow):
 
     def __init__(self, parent = None):
         QtWidgets.QMainWindow.__init__(self, parent)
-        
+        #import dawg_python
+        #d = dawg_python.DAWG().load('scripts/words.dawg')
         self.document_name = ''
         self.saved = True
         self.document_margin = 50
         self.page_length = 800
         
+        with open('data/dict_thesaurus.pkl', 'rb') as file:
+            self.dictionary = pickle.load(file)
+        
+        with open('data/words_trie.pkl', 'rb') as file:
+            self.global_trie = pickle.load(file)
+
         self.setup_ui()
 
     def setup_ui(self):
@@ -25,9 +34,15 @@ class Main(QtWidgets.QMainWindow):
         self.setWindowTitle('Shalla Editor')
         self.setWindowIcon(QtGui.QIcon("icons/shalla.png"))
 
-        self.text = QtWidgets.QTextEdit(self)
+        #self.text = QtWidgets.QTextEdit(self)
+        self.text = custom_text_edit.MyTextEdit(self)
+        completer = custom_text_edit.MyDictionaryCompleter()
+        self.text.setCompleter(completer)
+        self.text.setTextColor(QtGui.QColor('000000'))
+
         self.setCentralWidget(self.text)
 
+        self.local_trie = local_trie.LocalTrie(self)
 
         #initiazile toolbar, statusbar
         tool_bar.ToolBar(self)
@@ -58,9 +73,8 @@ class Main(QtWidgets.QMainWindow):
             popup.setIcon(QtWidgets.QMessageBox.Warning)
             popup.setText("The document has been modified")
             popup.setInformativeText("Do you want to save your changes?")
-            popup.setStandardButtons(QtWidgets.QMessageBox.Save   |
-                                      QtWidgets.QMessageBox.Cancel |
-                                      QtWidgets.QMessageBox.Discard)
+            popup.setStandardButtons(QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Cancel | 
+                QtWidgets.QMessageBox.Discard)
             popup.setDefaultButton(QtWidgets.QMessageBox.Save)
             choice = popup.exec_()
 

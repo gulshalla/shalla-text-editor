@@ -45,7 +45,13 @@ class ToolBar(QtWidgets.QMainWindow):
         ('Numbered List', 'icons/number.png', self.numbered, 'Ctrl+Shift+N', 'Numbered List'),
         ('Insert table', 'icons/table.png', self.table, 'Ctrl+T', 'Insert table'),
         ('Document statistics', 'icons/words.png', self.document_stats, 'Ctrl + L', 
-            'Document statistics')] 
+            'Document statistics'), 
+        ('English Dictionary', 'icons/dict.png', self.dictionary_check, 'Ctrl + Shift + D',
+            'English Dictionary'), 
+        ('Insert image', 'icons/image.png', self.insert_image, 'Ctrl + Shift + I', 'Insert image'),
+        ('Find and Replace', 'icons/find_replace.png', self.find_replace, 'Ctrl + F', 'Find and Replace'),
+        ('Spell Check', 'icons/spell_check.png', self.spellcheck, 'Ctrl + Shift + S', 'Spell Check'),
+        ('Thesaurus', 'icons/thesaurus.png', self.thesaurus, 'Ctrl + Shift + T', 'Thesaurus')] 
 
         # create new actions
         counter = itertools.count()
@@ -63,7 +69,12 @@ class ToolBar(QtWidgets.QMainWindow):
         self.parent.numbered_action = self.make_action(actions[next(counter)])
         self.parent.table_action = self.make_action(actions[next(counter)])
         self.parent.document_statistics_action = self.make_action(actions[next(counter)])
-
+        self.parent.dictionary_action = self.make_action(actions[next(counter)])
+        self.parent.insert_image_action = self.make_action(actions[next(counter)])
+        self.parent.find_replace_action = self.make_action(actions[next(counter)])
+        self.parent.spell_check_action = self.make_action(actions[next(counter)])
+        self.parent.thesaurus_action = self.make_action(actions[next(counter)])
+        
 
         # add them to the parent.tool_bar
         self.parent.tool_bar = self.parent.addToolBar("ToolBar")
@@ -84,12 +95,17 @@ class ToolBar(QtWidgets.QMainWindow):
         self.toolbar.addAction(self.parent.redo_action)
         self.toolbar.addSeparator()
 
+        self.toolbar.addAction(self.parent.insert_image_action)
         self.toolbar.addAction(self.parent.bullet_action)
         self.toolbar.addAction(self.parent.numbered_action)
         self.toolbar.addAction(self.parent.table_action)
         self.toolbar.addSeparator()
 
+        self.toolbar.addAction(self.parent.find_replace_action)
         self.toolbar.addAction(self.parent.document_statistics_action)
+        self.toolbar.addAction(self.parent.spell_check_action)
+        self.toolbar.addAction(self.parent.dictionary_action)
+        self.toolbar.addAction(self.parent.thesaurus_action)
         self.parent.addToolBarBreak()
 
 
@@ -187,6 +203,39 @@ class ToolBar(QtWidgets.QMainWindow):
                 popup.show()
             else:
                 cursor = self.parent.text.textCursor()
-                pixmap = QtGui.QPixmap(image)
-                pixmap4 = pixmap.scaled(64, 64, QtCore.Qt.KeepAspectRatio)
-                cursor.insertImage(pixmap4, image_file)
+                cursor.insertImage(image, image_file)
+
+    def dictionary_check(self):
+        cursor = self.parent.text.textCursor()
+        if cursor.hasSelection():
+            tc = self.parent.text.textCursor()
+            tc.select(QtGui.QTextCursor.WordUnderCursor) 
+            word = tc.selectedText().lower()
+            if word in self.parent.dictionary and self.parent.dictionary[word] != 1:
+                dictionary_app = dictionary_widget.DictionaryWidget(self.parent, tc.selectedText().lower())
+                dictionary_app.get_meaning()
+                dictionary_app.show()
+            else:
+                window = 'Key Error'
+                error = 'Word not in dictionary!'
+                popup = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical,
+                    window, error, QtWidgets.QMessageBox.Ok, self.parent)
+                popup.show()
+
+        else:
+            window = 'Empty string'
+            error = 'Make a selection first!'
+            popup = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical,
+                window, error, QtWidgets.QMessageBox.Ok, self.parent)
+            popup.show()
+
+    def find_replace(self):
+        find = find_and_replace.FindReplace(self.parent)
+        find.show()
+
+    def spellcheck(self):
+        spell_check.wrong_spelling(self.parent)
+
+    def thesaurus(self):
+        thesaurus_widget = thesaurus.Thesaurus(self.parent)
+        thesaurus_widget.get_synonyms()
