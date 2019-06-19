@@ -13,11 +13,11 @@ class MyTextEdit(QtWidgets.QTextEdit):
         self.setFont(font)
         self.parent = parent
         self.completer = None
-        self.prev_word = ''
+        self.prev_word = []
 
     def setCompleter(self, completer):
         if self.completer:
-            self.disconnect(self.completer, 0, self, 0)
+            self.completer.insertText.disconnect()
         if not completer:
             return
 
@@ -48,18 +48,20 @@ class MyTextEdit(QtWidgets.QTextEdit):
 
     def keyPressEvent(self, event):
         # add previous word to trie if space is pressed
-        if event.text().isalpha(): self.prev_word += event.text()
+        if event.text().isalpha(): self.prev_word.append(event.text())
+        if event.key() == QtCore.Qt.Key_Backspace: self.prev_word.pop()
         if event.text() == ' ': 
-            self.parent.local_trie.insert(self.prev_word)
-            self.prev_word = ''
+            self.parent.local_trie.insert(''.join(self.prev_word))
+            self.prev_word = []
 
         if self.completer and self.completer.popup() and self.completer.popup().isVisible():
             if event.key() in (
-            QtCore.Qt.Key_A,
-            QtCore.Qt.Key_B,
-            QtCore.Qt.Key_C,
-            QtCore.Qt.Key_D,
-            QtCore.Qt.Key_Backtab):
+            QtCore.Qt.Key_Enter,
+            QtCore.Qt.Key_Return,
+            QtCore.Qt.Key_Escape,
+            QtCore.Qt.Key_Tab,
+            QtCore.Qt.Key_Backtab,
+            QtCore.Qt.Key_Space):
                 event.ignore()
                 return
         ## has ctrl-Space been pressed??
@@ -68,10 +70,11 @@ class MyTextEdit(QtWidgets.QTextEdit):
         inline = (event.modifiers() == QtCore.Qt.ControlModifier and event.key() == QtCore.Qt.Key_E)
         ## if inline completion has been chosen
         if inline or isShortcut:
-            self.completer = None
+            #self.completer = None
             words = self.parent.local_trie.get_words(self.textUnderCursor())
             completer_new = MyDictionaryCompleter(words)
-            self.parent.text.setCompleter(completer_new)
+            self.setCompleter(completer_new)
+
 
         if inline:
             # set completion mode as inline
@@ -122,6 +125,7 @@ class MyDictionaryCompleter(QtWidgets.QCompleter):
         self.activated.connect(self.changeCompletion)
     
     def changeCompletion(self, completion):
+        print(completion)
         if completion.find("(") != -1:
             completion = completion[:completion.find("(")]
         print(completion)

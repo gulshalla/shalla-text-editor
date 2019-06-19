@@ -26,7 +26,20 @@ def custom_menu(parent, position):
         #position variable is needed to make sure menu is spawned at click position
         pos = parent.text.mapToGlobal(position)
         
-        if table:
+        cursor = parent.text.textCursor()
+        if cursor.hasSelection():
+            menu = QtWidgets.QMenu(parent)
+            
+            menu.addAction(parent.dictionary_action)
+            menu.addAction(parent.thesaurus_action)
+            menu.addAction(parent.spelling_action)
+
+            position = parent.mapToGlobal(position)
+            position.setY(pos.y() + 4)
+            menu.move(position)
+            menu.show()
+            
+        elif table:
             #create a new menu and add actions to it
             menu = QtWidgets.QMenu(parent)
             append_row_action = QtWidgets.QAction('Append row', parent)

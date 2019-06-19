@@ -51,7 +51,8 @@ class ToolBar(QtWidgets.QMainWindow):
         ('Insert image', 'icons/image.png', self.insert_image, 'Ctrl + Shift + I', 'Insert image'),
         ('Find and Replace', 'icons/find_replace.png', self.find_replace, 'Ctrl + F', 'Find and Replace'),
         ('Spell Check', 'icons/spell_check.png', self.spellcheck, 'Ctrl + Shift + S', 'Spell Check'),
-        ('Thesaurus', 'icons/thesaurus.png', self.thesaurus, 'Ctrl + Shift + T', 'Thesaurus')] 
+        ('Thesaurus', 'icons/thesaurus.png', self.thesaurus, 'Ctrl + Shift + T', 'Thesaurus'),
+        ('Spelling Suggestions', 'icons/spelling.png', self.spelling, 'Ctrl + Shift + C', 'Spelling suggestions')] 
 
         # create new actions
         counter = itertools.count()
@@ -74,6 +75,7 @@ class ToolBar(QtWidgets.QMainWindow):
         self.parent.find_replace_action = self.make_action(actions[next(counter)])
         self.parent.spell_check_action = self.make_action(actions[next(counter)])
         self.parent.thesaurus_action = self.make_action(actions[next(counter)])
+        self.parent.spelling_action = self.make_action(actions[next(counter)])
         
 
         # add them to the parent.tool_bar
@@ -106,6 +108,7 @@ class ToolBar(QtWidgets.QMainWindow):
         self.toolbar.addAction(self.parent.spell_check_action)
         self.toolbar.addAction(self.parent.dictionary_action)
         self.toolbar.addAction(self.parent.thesaurus_action)
+        self.toolbar.addAction(self.parent.spelling_action)
         self.parent.addToolBarBreak()
 
 
@@ -239,3 +242,7 @@ class ToolBar(QtWidgets.QMainWindow):
     def thesaurus(self):
         thesaurus_widget = thesaurus.Thesaurus(self.parent)
         thesaurus_widget.get_synonyms()
+
+    def spelling(self):
+        obj = spell_suggest.SpellSuggest(self.parent)
+        obj.get_suggestions()

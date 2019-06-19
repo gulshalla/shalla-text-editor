@@ -64,6 +64,7 @@ class Main(QtWidgets.QMainWindow):
         new_window = Main(self)
         new_window.show()
 
+
     #close app only when changes have been saved
     def closeEvent(self, event):
         if self.saved:
