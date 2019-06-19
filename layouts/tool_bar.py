@@ -145,8 +145,9 @@ class ToolBar(QtWidgets.QMainWindow):
             if not self.parent.document_name.endswith('.shalla'): 
                 self.parent.document_name += '.shalla'
 
-        with open(self.parent.document_name, 'wt') as doc:
-            doc.write(self.parent.text.toHtml())
+        if self.parent.document_name:
+            with open(self.parent.document_name, 'wt') as doc:
+                doc.write(self.parent.text.toHtml())
 
         self.parent.saved = True
 
