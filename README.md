@@ -35,9 +35,9 @@ The editor loads a dictionary stored as pickle file. The key, value pairs of thi
 ```
 word(key) -> [definition, synonyms](value)
 ```
-Words stored in the dictionary have been taken from this [link](https://github.com/dwyl/english-words).
-Definitions have been taken from this [link](https://github.com/matthewreagan/WebstersEnglishDictionary).
-Synonyms have been taken from this [link](https://github.com/zaibacu/thesaurus).
+Words stored in the dictionary have been taken from this [link](https://github.com/dwyl/english-words).  
+Definitions have been taken from this [link](https://github.com/matthewreagan/WebstersEnglishDictionary).  
+Synonyms have been taken from this [link](https://github.com/zaibacu/thesaurus).  
 
 The script to process the files is in the ```scripts``` folder. To save on space the synonyms and definitions of every word have not been included. Also each word has only one definition. These are the approximate sizes of the final lists:
 
@@ -63,9 +63,9 @@ The back end of this feature is implemented using two Tries. You can read about 
 
 ![alt text](https://github.com/gulshalla/shalla-text-editor/blob/master/icons/auto.png "Screen shot")
 
-The global trie is created using the words list in this link. The local trie is initially empty. Whenever a space  separated word is typed, the word is inserted into it. The words are also inserted into a queue. If the size of  the trie becomes larger than 10,000, the word at the front of the queue is popped and removed from the trie. 
+The global trie is created using the words list in this [link](https://gist.github.com/h3xx/1976236). The local trie is initially empty. Whenever a space  separated word is typed, the word is inserted into it. The words are also inserted into a queue. If the size of  the trie becomes larger than 10,000, the word at the front of the queue is popped and removed from the trie. 
 
-The suggestions list size can be up to 10 words long. If we can't find 10 matches in the local trie, the global is used. Completion suffixes are selected randomly from the tries.
+The suggestions list size can be up to 10 words long. If we can't find 10 matches in the local trie, the global one is used. Completion suffixes are selected randomly from the tries.
 
 #### Spelling Suggestions
 
@@ -81,7 +81,7 @@ truver
 truvers
 ```
 
-For every search, the limit of the number of words it returns is set to 50. The result of all the words is combined in a list and the Levenshtein distance with the original word is calculated for every word in the list. You can read more about Levenshtein distances [here](https://en.wikipedia.org/wiki/Levenshtein_distance). The 5 words with the least distance are returned.
+For every search, the limit of the number of words it returns is set to 50. All the returned word lists are combined in a list and the Levenshtein distance with the original word is calculated for every word. You can read more about Levenshtein distances [here](https://en.wikipedia.org/wiki/Levenshtein_distance). The 5 words with the least distance are returned.
 
  
 
