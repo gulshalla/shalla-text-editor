@@ -81,7 +81,8 @@ truver
 truvers
 ```
 
-For every search, the limit of the number of words it returns is set to 50. All the returned word lists are combined in a list and the Levenshtein distance with the original word is calculated for every word. You can read more about Levenshtein distances [here](https://en.wikipedia.org/wiki/Levenshtein_distance). The 5 words with the least distance are returned.
+For every search, the limit of the number of words it returns is set to 50. All the returned word lists are combined in a list and the Levenshtein distance with the original word is calculated for every word. You can read more about Levenshtein distances [here](https://en.wikipedia.org/wiki/Levenshtein_distance). The 5 words with the least distance are returned. The performace of the current version varies because the global trie has only 40,000 words. Loading more words in the Trie for a local program will cause memory issues on slower systems. Ideally this would be an online service where the local client sends spell check requests to a server. You can try creating a Trie with a bigger word list using the ```make_trie``` function in the scripts folder. 
+
 
  
 
