@@ -31,7 +31,7 @@ Make sure you have the latest version of PyQt(5.1.2). The app has been tested us
 You can set the font, color, size etc. Text can be set to bold, underlined, highlighted and more. Tables and images can be inserted. The behaviour of these features is similar to standard text editors. 
 
 #### Dictionary, thesaurus, spell checking
-The editor loads a dictionary stored as pickle file. The key, value pairs of this dictionary is as follows:
+The editor loads a dictionary stored as pickle file. The key, value pairs of this dictionary are as follows:
 ```
 word(key) -> [definition, synonyms](value)
 ```
@@ -47,7 +47,7 @@ Synonyms: 40,000
 Definitions: 50,000
 ```
 
-To use the dictionary or thesaurus, select some text and click the respective buttons in the toolbar. You can also right click the selection to open a custom context menu. This will open a dialog box with the result. 
+To use the dictionary or thesaurus, select some text and click the respective buttons in the toolbar. You can also right click the selection to open a custom context menu and chose an option. This will open a dialog box with the result. 
 
 Running spell check will underline and set the font to red for all words not in the dictionary. 
 
@@ -65,7 +65,7 @@ The back end of this feature is implemented using two Tries. You can read about 
 
 The global trie is created using the words list in this [link](https://gist.github.com/h3xx/1976236). The local trie is initially empty. Whenever a space  separated word is typed, the word is inserted into it. The words are also inserted into a queue. If the size of  the trie becomes larger than 10,000, the word at the front of the queue is popped and removed from the trie. 
 
-The suggestions list size can be up to 10 words long. If we can't find 10 matches in the local trie, the global one is used. Completion suffixes are selected randomly from the tries.
+The size of the suggestions list can be up to 10 words long. If we can't find 10 matches in the local trie, the global one is used. Completion suffixes are selected randomly from the tries.
 
 #### Spelling Suggestions
 
