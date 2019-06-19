@@ -2,8 +2,6 @@ import sys
 from PyQt5 import QtWidgets, QtPrintSupport, QtGui, QtCore
 from PyQt5.QtCore import Qt 
 
-import json
-
 def wrong_spelling(parent):
     text = parent.text.toPlainText()
     start = end = 0

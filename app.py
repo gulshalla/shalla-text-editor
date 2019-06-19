@@ -13,8 +13,6 @@ class Main(QtWidgets.QMainWindow):
 
     def __init__(self, parent = None):
         QtWidgets.QMainWindow.__init__(self, parent)
-        #import dawg_python
-        #d = dawg_python.DAWG().load('scripts/words.dawg')
         self.document_name = ''
         self.saved = True
         self.document_margin = 50

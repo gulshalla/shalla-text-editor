@@ -32,7 +32,7 @@ class ToolBar(QtWidgets.QMainWindow):
     def setup_toolbar(self):
         # list of action arguments
         actions = [('New', 'icons/new.png', self.parent.new, 'Ctrl+N', 'New document'),
-        ('Open', 'icons/open.png', self.open, 'Ctrl+N', 'Open existing file'),
+        ('Open', 'icons/open.png', self.open, 'Ctrl+O', 'Open existing file'),
         ('Save', 'icons/save.png', self.save, 'Ctrl+S', 'Save'),
         ('Print', 'icons/print.png', self.print_page, 'Ctrl+P', 'Print'),
         ('Page View', 'icons/page.png', self.preview, 'Ctrl+Shift+P', 'Page View'),
@@ -52,7 +52,9 @@ class ToolBar(QtWidgets.QMainWindow):
         ('Find and Replace', 'icons/find_replace.png', self.find_replace, 'Ctrl + F', 'Find and Replace'),
         ('Spell Check', 'icons/spell_check.png', self.spellcheck, 'Ctrl + Shift + S', 'Spell Check'),
         ('Thesaurus', 'icons/thesaurus.png', self.thesaurus, 'Ctrl + Shift + T', 'Thesaurus'),
-        ('Spelling Suggestions', 'icons/spelling.png', self.spelling, 'Ctrl + Shift + C', 'Spelling suggestions')] 
+        ('Spelling Suggestions', 'icons/spelling.png', self.spelling, 'Ctrl + Shift + C', 'Spelling suggestions'),
+        ('Partial Matches', 'icons/partial.png', self.partial, 'Ctrl + Shift + M', 'Partial matches'), 
+        ('Shortcuts', 'icons/shortcuts.png', self.shortcuts, 'Ctrl + Alt + S', 'Shortucts')] 
 
         # create new actions
         counter = itertools.count()
@@ -76,6 +78,8 @@ class ToolBar(QtWidgets.QMainWindow):
         self.parent.spell_check_action = self.make_action(actions[next(counter)])
         self.parent.thesaurus_action = self.make_action(actions[next(counter)])
         self.parent.spelling_action = self.make_action(actions[next(counter)])
+        self.parent.partial_action = self.make_action(actions[next(counter)])
+        self.parent.shortcuts_action = self.make_action(actions[next(counter)])
         
 
         # add them to the parent.tool_bar
@@ -104,11 +108,15 @@ class ToolBar(QtWidgets.QMainWindow):
         self.toolbar.addSeparator()
 
         self.toolbar.addAction(self.parent.find_replace_action)
+        self.toolbar.addAction(self.parent.partial_action)
         self.toolbar.addAction(self.parent.document_statistics_action)
         self.toolbar.addAction(self.parent.spell_check_action)
         self.toolbar.addAction(self.parent.dictionary_action)
         self.toolbar.addAction(self.parent.thesaurus_action)
         self.toolbar.addAction(self.parent.spelling_action)
+        self.toolbar.addSeparator()
+        
+        self.toolbar.addAction(self.parent.shortcuts_action)
         self.parent.addToolBarBreak()
 
 
@@ -246,3 +254,12 @@ class ToolBar(QtWidgets.QMainWindow):
     def spelling(self):
         obj = spell_suggest.SpellSuggest(self.parent)
         obj.get_suggestions()
+
+    def partial(self):
+        obj = partial_match.PartialMatch(self.parent)
+        obj.get_matches()        
+
+    def shortcuts(self):
+        obj = shortcuts.Shortcuts(self.parent)
+        obj.show()
+

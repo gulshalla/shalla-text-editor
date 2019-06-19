@@ -58,7 +58,7 @@ class FormatBar(QtWidgets.QMainWindow):
         indent_action = self.make_action('Indent', 'icons/indent.png', 
             self.indent, 'Ctrl + Shift + I', 'Indent')
         dedent_action = self.make_action('Dedent', 'icons/dedent.png', 
-            self.dedent, 'Ctrl + Shift + D', 'Dedent')
+            self.dedent, 'Ctrl + Shift + R', 'Dedent')
 
         font_bar = QtWidgets.QFontComboBox(self.parent)
         font_bar.currentFontChanged.connect(lambda font: self.parent.text.setCurrentFont(font))

@@ -49,7 +49,8 @@ class MyTextEdit(QtWidgets.QTextEdit):
     def keyPressEvent(self, event):
         # add previous word to trie if space is pressed
         if event.text().isalpha(): self.prev_word.append(event.text())
-        if event.key() == QtCore.Qt.Key_Backspace: self.prev_word.pop()
+        if event.key() == QtCore.Qt.Key_Backspace: 
+            if self.prev_word: self.prev_word.pop()
         if event.text() == ' ': 
             self.parent.local_trie.insert(''.join(self.prev_word))
             self.prev_word = []

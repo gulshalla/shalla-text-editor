@@ -30,15 +30,23 @@ def custom_menu(parent, position):
         if cursor.hasSelection():
             menu = QtWidgets.QMenu(parent)
             
+            menu.addAction(parent.undo_action)
+            menu.addAction(parent.redo_action)
+            menu.addSeparator()
+            menu.addAction(parent.cut_action)
+            menu.addAction(parent.copy_action)
+            menu.addAction(parent.paste_action)
+            menu.addSeparator()
             menu.addAction(parent.dictionary_action)
             menu.addAction(parent.thesaurus_action)
             menu.addAction(parent.spelling_action)
+            menu.addAction(parent.partial_action)
 
             position = parent.mapToGlobal(position)
             position.setY(pos.y() + 4)
             menu.move(position)
             menu.show()
-            
+
         elif table:
             #create a new menu and add actions to it
             menu = QtWidgets.QMenu(parent)
