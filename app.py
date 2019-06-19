@@ -62,6 +62,27 @@ class Main(QtWidgets.QMainWindow):
         new_window = Main(self)
         new_window.show()
 
+    def save(self):
+        '''
+        save the current document to local disk
+        '''
+        
+        #Make sure we have a filename
+        if self.document_name == '':
+            self.document_name = QtWidgets.QFileDialog.getSaveFileName(
+                self, 'Save File')[0]
+
+        #Make sure .shalla is appended
+        if self.document_name:
+            if not self.document_name.endswith('.shalla'): 
+                self.document_name += '.shalla'
+
+        if self.document_name:
+            with open(self.document_name, 'wt') as doc:
+                doc.write(self.text.toHtml())
+
+        self.saved = True
+
 
     #close app only when changes have been saved
     def closeEvent(self, event):
