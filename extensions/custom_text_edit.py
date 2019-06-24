@@ -126,8 +126,8 @@ class MyDictionaryCompleter(QtWidgets.QCompleter):
         self.activated.connect(self.changeCompletion)
     
     def changeCompletion(self, completion):
-        print(completion)
+        #print(completion)
         if completion.find("(") != -1:
             completion = completion[:completion.find("(")]
-        print(completion)
+        #print(completion)
         self.insertText.emit(completion)
